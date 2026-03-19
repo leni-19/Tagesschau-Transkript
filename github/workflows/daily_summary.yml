@@ -1,0 +1,45 @@
+name: Tagesschau Summarizer
+
+on:
+  schedule:
+    # Jeden Tag um 20:45 Uhr UTC (21:45 Uhr bzw. 22:45 Uhr MEZ) YouTube prüfen
+    - cron: '45 20 * * *'
+  workflow_dispatch: # Erlaubt manuelles Starten über den Button auf GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # GANZ WICHTIG: Das erlaubt dem Bot, das HTML ins GitHub hochzuladen!
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r Website/.github/scripts/requirements.txt || pip install -r .github/scripts/requirements.txt
+        sudo apt-get install ffmpeg -y
+
+    - name: Run Tagesschau AI Script
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
+      # Führt das Skript aus
+      run: python Website/.github/scripts/process.py || python .github/scripts/process.py
+
+    - name: Commit and push HTML transcript
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add Website/transkripte/
+        git commit -m "Automatisch erstelltes Tagesschau-Transkript hinzugefügt 🚀" || echo "Keine neuen Änderungen zum committen gefunden"
+        git push
