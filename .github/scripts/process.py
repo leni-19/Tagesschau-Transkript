@@ -3,7 +3,6 @@ import google.generativeai as genai
 from xml.etree import ElementTree as ET
 from youtube_transcript_api import YouTubeTranscriptApi
 
-# Ignoriere nervige Google-Zukunfts-Warnungen
 warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -44,12 +43,11 @@ def is_already_processed(published_at):
 
 def get_transcript_text(video_id):
     try:
-        # Hier nutzen wir jetzt die stabilere Abfrage-Methode!
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-        transcript = transcript_list.find_transcript(['de']).fetch()
+        # Dieser Befehl schnappt sich bei Version 0.6.3 ganz einfach die automatisch erzeugten Untertitel!
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['de'])
         return " ".join([t['text'] for t in transcript])
     except Exception as e:
-        logging.error(f"Failed to fetch transcript: {e}")
+        logging.error(f"Failed to fetch transcript (auto or manual): {e}")
         return None
 
 def process_with_gemini(raw_text):
