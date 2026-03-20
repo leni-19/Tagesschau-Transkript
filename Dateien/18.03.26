@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transkript: Tagesschau 18. März 2026 (Fiktiv)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f9;
+        }
+        header {
+            background-color: #00305e;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+        .disclaimer {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+        .entry {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .timestamp {
+            font-weight: bold;
+            color: #0056b3;
+            display: inline-block;
+            width: 60px;
+        }
+        .speaker {
+            font-weight: bold;
+            color: #d9534f;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .content {
+            display: block;
+            margin-left: 0;
+        }
+        h1 { margin: 0; font-size: 1.8em; }
+        h2 { color: #00305e; border-bottom: 2px solid #00305e; padding-bottom: 5px; }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>tagesschau</h1>
+    <p>Sendung vom 18. März 2026 (Szenario)</p>
+</header>
+
+<div class="disclaimer">
+    <strong>Hinweis:</strong> Dies ist ein wörtliches Transkript eines fiktiven Nachrichtenszenarios (Zukunftsszenario). Alle Ereignisse und Daten sind rein spekulativ.
+</div>
+
+<div class="entry">
+    <span class="timestamp">00:00</span>
+    <span class="speaker">Sprecherin (Off):</span>
+    <span class="content">Hier ist das Erste Deutsche Fernsehen mit der Tagesschau. Heute im Studio: Julia-Niharika Sen.</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">00:18</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Guten Abend, ich begrüße Sie zur Tagesschau. Israel will die gesamte iranische Führungsriege töten. So hat es der israelische Verteidigungsminister Katz angekündigt...</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">00:54</span>
+    <span class="speaker">Bericht (Gabriele Dunkel):</span>
+    <span class="content">Teheran heute Vormittag. Tausende regimegetreue Iraner nehmen an den Trauerfeierlichkeiten für mehrere ranghohe Funktionäre teil...</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">01:23</span>
+    <span class="speaker">Abbas Araghchi (Außenminister Iran):</span>
+    <span class="content">Entscheidend ist, dass das politische System in Iran eine sehr solide Struktur ist...</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">02:33</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Ramin Sina in Doha, der Hauptstadt von Katar. Israel und die USA haben heute auch ein Gasfeld angegriffen... wie sind die Reaktionen?</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">04:36</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Der Irankrieg war heute auch Thema einer Regierungserklärung von Bundeskanzler Merz. Er bedauerte, dass die USA ihre Angriffe nicht mit Europa abgestimmt haben.</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">05:19</span>
+    <span class="speaker">Friedrich Merz (Bundeskanzler):</span>
+    <span class="content">"Wir wollen uns, liebe Kolleginnen und Kollegen, nicht länger unter Wert verkaufen."</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">07:38</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Die Leipziger Buchmesse steht in diesem Jahr unter dem Motto „Wo Geschichten uns verbinden“... Kulturstaatsminister Weimer steht in der Kritik.</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">11:39</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Die Leibniz-Preise wurden verliehen. Zehn Wissenschaftler wurden geehrt, unter anderem für die Erforschung uralter DNA.</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">13:34</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Probleme in Klassen-Chats: Eine aktuelle Umfrage zeigt, dass Beleidigungen und Mobbinginhalte viele Kinder belasten.</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">15:35</span>
+    <span class="speaker">Wettervorhersage:</span>
+    <span class="content">Hoher Luftdruck sorgt für Sonnenschein, im Norden Wolken. Temperaturen steigen im Westen bis auf 20 Grad.</span>
+</div>
+
+<div class="entry">
+    <span class="timestamp">16:30</span>
+    <span class="speaker">Julia-Niharika Sen:</span>
+    <span class="content">Um 22:15 Uhr in den Tagesthemen: Mehr zur Politik von Minister Weimer und Comedian Oliver Polak in Los Angeles. Schönen Abend.</span>
+</div>
+
+<footer>
+    <p>Erstellt basierend auf dem Video-Inhalt | 2024</p>
+</footer>
+
+</body>
+</html>
