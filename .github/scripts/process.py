@@ -1,8 +1,10 @@
-import os, sys, logging, requests, resend, json
+import os, sys, logging, requests, resend, json, warnings
 import google.generativeai as genai
 from xml.etree import ElementTree as ET
 from youtube_transcript_api import YouTubeTranscriptApi
 
+# Ignoriere nervige Google-Zukunfts-Warnungen
+warnings.filterwarnings("ignore")
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
@@ -42,7 +44,9 @@ def is_already_processed(published_at):
 
 def get_transcript_text(video_id):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['de'])
+        # Hier nutzen wir jetzt die stabilere Abfrage-Methode!
+        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+        transcript = transcript_list.find_transcript(['de']).fetch()
         return " ".join([t['text'] for t in transcript])
     except Exception as e:
         logging.error(f"Failed to fetch transcript: {e}")
