@@ -1,6 +1,7 @@
-import os, sys, time, logging, requests, yt_dlp, resend, json
+import os, sys, logging, requests, resend, json
 import google.generativeai as genai
 from xml.etree import ElementTree as ET
+from youtube_transcript_api import YouTubeTranscriptApi
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -39,28 +40,32 @@ def is_already_processed(published_at):
         if os.path.exists(p): return True
     return False
 
-def download_video(video_id):
-    y_opts = {'format': 'best[ext=mp4][height<=480]/best', 'outtmpl': f"{video_id}.mp4", 'quiet': False}
-    with yt_dlp.YoutubeDL(y_opts) as ydl:
-        ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
-    return f"{video_id}.mp4"
+def get_transcript_text(video_id):
+    try:
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['de'])
+        return " ".join([t['text'] for t in transcript])
+    except Exception as e:
+        logging.error(f"Failed to fetch transcript: {e}")
+        return None
 
-def process_with_gemini(filepath):
-    video_file = genai.upload_file(path=filepath)
-    while video_file.state.name == "PROCESSING":
-        time.sleep(10)
-        video_file = genai.get_file(video_file.name)
-        
+def process_with_gemini(raw_text):
     model = genai.GenerativeModel(model_name="models/gemini-3.1-flash-lite-preview")
-    prompt = """
-Erstelle basierend auf diesem Tagesschau-Video eine detaillierte Zusammenfassung. Mache genau EIN JSON-Objekt ohne Markdown:
-{
-  "visual_description": "Bildbeschreibung hier...",
-  "transcript_html": "<p>Sinnabschnitt 1</p><p>Sinnabschnitt 2</p>"
-}
+    prompt = f"""
+Erstelle aus dem folgenden rohen Tagesschau-Transkript ein gut lesbares, sauberes HTML-Protokoll.
+WICHTIG: Deine Antwort muss genau EIN gültiges JSON-Objekt sein, absolut ohne Markdown-Blöcke (kein ```json).
+
+Extrahiere genau diese Variable:
+1. "transcript_html": Das vollständige inhaltliche Text-Protokoll der Sendung. Jeder Sprecher oder Sinnabschnitt muss in ein <p> Tag gewrappt sein. Nutze <strong> für wichtige Themen-Überschriften im Text.
+
+Beispiel-Format:
+{{
+  "transcript_html": "<p><strong>Außenpolitik:</strong> Guten Abend.</p><p>Das Wetter...</p>"
+}}
+
+Hier ist das Rohtranskript:
+{raw_text}
     """
-    response = model.generate_content([video_file, prompt], request_options={"timeout": 600})
-    genai.delete_file(video_file.name)
+    response = model.generate_content(prompt, request_options={"timeout": 60})
     
     text = response.text.strip()
     if text.startswith("```json"): text = text[7:]
@@ -68,7 +73,7 @@ Erstelle basierend auf diesem Tagesschau-Video eine detaillierte Zusammenfassung
     if text.endswith("```"): text = text[:-3]
     return json.loads(text.strip())
 
-def save_to_html(title, published_at, visual_description, transcript_html):
+def save_to_html(title, published_at, transcript_html):
     date_str = published_at.split("T")[0]
     html = f"""<!DOCTYPE html>
 <html lang="de">
@@ -76,9 +81,6 @@ def save_to_html(title, published_at, visual_description, transcript_html):
 <body>
     <header><h1>{title}</h1></header>
     <main>
-        <section class="image-description">
-            <h2>Bildbeschreibung</h2><p>{visual_description}</p>
-        </section>
         <section class="transcript-box">
             <h2>Wörtliches Protokoll</h2><div class="transcript-text">{transcript_html}</div>
         </section>
@@ -94,16 +96,18 @@ def main():
     latest = get_latest_video()
     if not latest or is_already_processed(latest["published_at"]): return
     
-    filepath = None
+    video_id = latest["video_id"]
+    raw_text = get_transcript_text(video_id)
+    if not raw_text:
+        logging.error("No transcript available.")
+        sys.exit(1)
+        
     try:
-        filepath = download_video(latest["video_id"])
-        data = process_with_gemini(filepath)
-        save_to_html(latest["title"], latest["published_at"], data.get("visual_description", ""), data.get("transcript_html", ""))
+        data = process_with_gemini(raw_text)
+        save_to_html(latest["title"], latest["published_at"], data.get("transcript_html", ""))
     except Exception as e:
         logging.error(f"Failed: {e}")
         sys.exit(1)
-    finally:
-        if filepath and os.path.exists(filepath): os.remove(filepath)
 
 if __name__ == "__main__":
     main()
